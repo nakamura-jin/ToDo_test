@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>ToDoリスト</h1>
+    <div class="container">
+      <div class="task__create">
+        <span>タスク名：</span>
+        <input type="text" v-model="newTask">
+        <h2>タスク</h2>
+        <ul>
+          <li v-for="todo in todos">{{ todo }}</li>
+        </ul>
+      </div>
+      <div class="create__time">
+        <span>推定時間</span>
+        <input type="text" v-model="newTime">
+        <span>分</span>
+        <button v-on:click="addTask">追加</button>
+        <h2>推定時間</h2>
+        <ul>
+          <li v-for="time in times">{{ time }}<value-minutes v-bind:is-time="minutes"></value-minutes></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    Vue.component('value-minutes', {
+      props: {
+        isTime: {
+          type: String,
+          required: true
+        }
+      },
+      template: '<span>{{ isTime }}</span>',
+    })
+    const vm = new Vue({
+      el: '#app',
+      data() {
+        return {
+          newTask: '',
+          newTime: 60,
+          todos: [],
+          times: [],
+          minutes: '分'
+        }
+      },
+      props: {
+        input: {
+          required: true
+        }
+      },
+      methods: {
+        addTask(str, num) {
+          const time = this.newTime
+          const todo = this.newTask
+          this.times.push(time)
+          this.todos.push(todo)
+          this.newTask = ''
+        }
+      }
+    })
+  </script>
+</body>
+
+<style>
+  #app {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .container {
+    display: flex;
+  }
+  h1 {
+    text-align: center;
+  }
+  .create__time {
+    margin-left: 50px;
+  }
+  h2 {
+    margin-left: 50px;
+  }
+  li {
+    list-style: none;
+  }
+</style>
+</html>
